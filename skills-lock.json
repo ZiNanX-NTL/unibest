@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "alova-client-usage": {
+      "source": "alovajs/skills",
+      "sourceType": "github",
+      "computedHash": "f73685df13ead4f9a91bad91502fb82edefbb5aa3efcde9a2e87a1dc801a5343"
+    }
+  }
+}

@@ -4,8 +4,7 @@ import { createAlova } from 'alova'
 import { createServerTokenAuthentication } from 'alova/client'
 import VueHook from 'alova/vue'
 import { toLoginPage } from '@/utils/toLoginPage'
-import type { Method } from 'alova'
-import { handleBackendError, handleResponseError, handleServiceResult, transformRequestData } from '../helpers'
+import { RequestInterceptor } from './alovaInterceptor'
 
 // 配置动态Tag
 export const API_DOMAINS = {
@@ -38,68 +37,12 @@ const { onAuthRequired, onResponseRefreshToken } = createServerTokenAuthenticati
   },
 })
 
-const backendConfig: Service.BackendResultConfig = {
-  codeKey: 'Code',
-  dataKey: 'Data',
-  msgKey: 'Desc',
-  successCode: '0'
-}
-const interceptors = {
-  beforeRequest: async (method: Method) => { 
-    console.log("实例请求拦截");
-    const { config } = method;
-    if (config.headers) {
-      // 数据转换
-      const contentType = config.headers['Content-Type'] as Service.ContentType;
-      method.data = await transformRequestData(method.data, contentType);
-      // 设置token
-      // config.headers.Authorization = localStg.get('token') || '';
-    }
-    // 处理动态域名
-    if (config.meta?.domain) {
-      method.baseURL = config.meta.domain
-      console.log('当前域名', method.baseURL)
-    }
-  },
-  responded: {
-    onSuccess: async (response: any, method: Method) => {
-      console.log("实例响应拦截");
-      const {
-        statusCode,
-        data,
-        errMsg,
-      } = response as UniNamespace.RequestSuccessCallbackResult
-      console.log('response===>', response)
-      const { config } = method
-      const { requestType } = config
-
-      if (statusCode === 200 || statusCode < 300 || statusCode === 304) {
-        // 处理特殊请求类型（上传/下载）
-        if (requestType === 'upload' || requestType === 'download') {
-          return handleServiceResult(null, response.data);
-        }
-        const backend = { ...response.data };
-        const { codeKey, dataKey, successCode } = backendConfig;
-        // 请求成功
-        if (backend[codeKey] === successCode) {
-          // dataKey 为空时返回整个 backend 对象
-          const resultData = dataKey ? backend[dataKey] : backend;
-          return handleServiceResult(null, resultData);
-        }
-
-        const error = handleBackendError(backend, backendConfig);
-        return handleServiceResult(error, null);
-      }
-      const error = handleResponseError(response);
-      return handleServiceResult(error, null);
-    }
-  }
-}
+const interceptors = new RequestInterceptor()
 
 /**
  * alova 请求实例
  */
-const alovaInstance = createAlova({
+export const alovaInstance = createAlova({
   baseURL: API_DOMAINS.DEFAULT,
   ...AdapterUniapp(),
 
@@ -132,5 +75,3 @@ const alovaInstance = createAlova({
     }
   })
 })
-
-export const http = alovaInstance

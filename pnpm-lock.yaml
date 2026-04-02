@@ -139,6 +139,9 @@ importers:
       '@types/node':
         specifier: ^20.17.9
         version: 20.19.11
+      '@types/qs':
+        specifier: ^6.15.0
+        version: 6.15.0
       '@uni-helper/eslint-config':
         specifier: 0.5.0
         version: 0.5.0(@antfu/eslint-config@5.2.1(@unocss/eslint-plugin@66.5.0(eslint@9.34.0(jiti@2.6.1))(typescript@5.8.3))(@vue/compiler-sfc@3.5.22)(eslint-plugin-format@1.0.1(eslint@9.34.0(jiti@2.6.1)))(eslint@9.34.0(jiti@2.6.1))(typescript@5.8.3))(eslint@9.34.0(jiti@2.6.1))
@@ -3091,6 +3094,9 @@ packages:
 
   '@types/proper-lockfile@4.1.4':
     resolution: {integrity: sha512-uo2ABllncSqg9F1D4nugVl9v93RmjxF6LJzQLMLDdPaXCUIDPeOJ21Gbqi43xNKzBi/WQ0Q0dICqufzQbMjipQ==}
+
+  '@types/qs@6.15.0':
+    resolution: {integrity: sha512-JawvT8iBVWpzTrz3EGw9BTQFg3BQNmwERdKE22vlTxawwtbyUSlMppvZYKLZzB5zgACXdXxbD3m1bXaMqP/9ow==}
 
   '@types/responselike@1.0.3':
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
@@ -13878,6 +13884,8 @@ snapshots:
   '@types/proper-lockfile@4.1.4':
     dependencies:
       '@types/retry': 0.12.5
+
+  '@types/qs@6.15.0': {}
 
   '@types/responselike@1.0.3':
     dependencies:
